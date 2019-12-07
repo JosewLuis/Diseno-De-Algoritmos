@@ -1,0 +1,36 @@
+\begin{lstlisting}
+    
+void DEF_LIB_EXPORTED placeDefenses(bool** freeCells,int nCellsWidth,int nCellsHeight,float mapWidth,float mapHeight,std::list<Object*> obstacles,std::list<Defense*> defenses){
+        aux=0;
+    
+        for(int i=0;i<nCellsWidth;i++){
+            for(int j=0;j<nCellsHeight;j++){
+                Vector3 x=cellCenterToPosition(i,j,cellWidth,cellHeight);
+                positionToCell(x,p,q,cellWidth,cellHeight);
+                Values[aux].x_=x.x;
+                Values[aux].y_=x.y;
+                Values[aux].valor_=cellValue(i,j,Base,obstacles);
+                aux++;
+            }
+        }
+    
+        Ordenadas=ordenar(Values,nCellsWidth,nCellsHeight);
+    
+        while(currentDefense!=defenses.end()){
+            find=false;
+            for(it=Ordenadas.begin();it!=Ordenadas.end() && find==false;it++){
+                (*currentDefense)->position.x=(*it).x_;
+                (*currentDefense)->position.y=(*it).y_;
+                positionToCell((*currentDefense)->position,p,q,cellWidth,cellHeight);
+                if(factibilidad((*currentDefense),colocadas,obstacles,mapWidth,mapHeight,freeCells,p,q)){
+                    find=true;
+                    Ordenadas.erase(it);
+                    colocadas.push_back((*currentDefense));
+                    currentDefense++;
+                    freeCells[p][q]=false;
+                }
+            }
+        }
+}
+
+\end{lstlisting}

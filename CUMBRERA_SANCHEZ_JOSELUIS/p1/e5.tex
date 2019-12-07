@@ -1,0 +1,13 @@
+\begin{lstlisting}
+
+float cellValue(int i,int j,Defense* Base,std::list<Object*> obstacles){
+	float distance=abs(Base->position.x-i)+abs(Base->position.y-j);
+	std::list<Object*>::iterator it;
+
+	for(it=obstacles.begin();it!=obstacles.end();it++){
+		distance=distance+abs(i-(*it)->position.x)+abs(j-(*it)->position.y);
+	}
+	return distance;
+}
+
+\end{lstlisting}

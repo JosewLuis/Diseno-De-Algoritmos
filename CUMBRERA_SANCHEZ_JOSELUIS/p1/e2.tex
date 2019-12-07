@@ -1,0 +1,42 @@
+\begin{lstlisting}
+
+bool factibilidad(Defense* currentDefense,std::list<Defense*> defenses,std::list<Object*> obstacles,float mapWidth,float mapHeight,bool** freeCells,int i,int j){
+	//Si la celda esta ya ocupada:
+	if(freeCells[i][j]==false){
+		return false;
+	}
+
+	//Hay varias opciones de que el resultado sea negativo, que choque con un obstaculo o que se salga de rango.
+	//Sale de rango (0 o max posible):
+	if(currentDefense->position.x-currentDefense->radio<=0 || currentDefense->position.x+currentDefense->radio>=mapHeight || currentDefense->position.y-currentDefense->radio<=0 || currentDefense->position.y+currentDefense->radio>=mapWidth){
+		return false;
+	}
+
+	//Choca contra otra estructura del juego ya colocada (obstaculo u otra defensa):
+	std::list<Defense*>::iterator verify;
+	for(verify=defenses.begin();verify!=defenses.end();verify++){
+		float euclid=_distance((*verify)->position,currentDefense->position);
+
+		float radio=(*verify)->radio+currentDefense->radio;
+
+		if(radio>=euclid){
+			return false;
+		}
+	}
+
+	std::list<Object*>::iterator v;
+	for(v=obstacles.begin();v!=obstacles.end();v++){
+		float euclid=_distance((*v)->position,currentDefense->position);
+
+		float radio=(*v)->radio+currentDefense->radio;
+
+		if(radio>=euclid){
+			return false;
+		}
+	}
+	
+	//Si se llega hasta aqui enhorabuena, es factible.
+	return true;
+}
+
+\end{lstlisting}
